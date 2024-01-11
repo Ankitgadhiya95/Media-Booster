@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mediabooster/mediaboosterprovider.dart';
 import 'package:mediabooster/videoscreen.dart';
-import 'circular.dart';
+import 'package:provider/provider.dart';
+
 import 'musicscreen.dart';
 
 void main() {
@@ -13,14 +15,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor:  Color(0XFF060316)),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MediaBoosterProvider())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor:  Color(0XFF060316)),
+          useMaterial3: true,
+        ),
+        home: MyHomePage(title: '',),
       ),
-      home: MyHomePage(title: '',),
     );
   }
 }
@@ -38,9 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget  build(BuildContext context) {
+    final provider = Provider.of<MediaBoosterProvider>(context, listen: true);
     return DefaultTabController(
-      // initialIndex: 0,
       length: 2,
       child: Scaffold(
         appBar: AppBar(
@@ -73,21 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
 
-        /*Center(
-          child: CarouselSlider(
 
-              items: listData
-                  .map((e) => Center(
-                        child: Container(
-                          color: Colors.red,
-                          height: 200,
-                          width: double.infinity,
-                          child: Text(e.toString()),
-                        ),
-                      ))
-                  .toList(),
-              options: CarouselOptions()),
-        ),*/
       ),
     );
   }

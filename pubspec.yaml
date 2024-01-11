@@ -43,6 +43,7 @@ dependencies:
   video_player:
   chewie:
   google_fonts:
+  provider:
 
 dev_dependencies:
   flutter_test:

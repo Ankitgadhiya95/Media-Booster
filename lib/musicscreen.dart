@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mediabooster/mediaboosterprovider.dart';
 import 'package:mediabooster/musicplayscreen.dart';
-
-import 'musicmodelclass.dart';
+import 'package:provider/provider.dart';
 
 class MusicScreen extends StatefulWidget {
   const MusicScreen({super.key});
@@ -16,6 +16,8 @@ class MusicScreen extends StatefulWidget {
 class _MusicScreenState extends State<MusicScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MediaBoosterProvider>(context, listen: true);
+
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(
@@ -27,13 +29,12 @@ class _MusicScreenState extends State<MusicScreen> {
           ),
           Center(
             child: CarouselSlider(
-              items: listData
+              items: provider.getSongData
                   .map(
                     (e) => Center(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
                         child: Container(
-                          // color: Colors.red,
                           height: 220,
                           width: double.infinity,
                           child: InkWell(
@@ -89,68 +90,71 @@ class _MusicScreenState extends State<MusicScreen> {
             height: height - 400,
             // color: Colors.red,
             child: ListView.builder(
-                itemCount: listData.length,
+                itemCount: provider.getSongData.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment(0.8, 1),
-                            colors: <Color>[
-                              Color(0xff120D24),
-                              Color(0xff310E37),
-                            ],
-                            tileMode: TileMode.mirror,
-                          ),
+                      height: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment(0.8, 1),
+                          colors: <Color>[
+                            Color(0xff120D24),
+                            Color(0xff310E37),
+                          ],
+                          tileMode: TileMode.mirror,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            /*mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,*/
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => MusicPlayScreen(
-                                          image: listData[index].img!,
-                                          sogname: listData[index].songname!,
-                                          cover: listData[index].coverimg!,
-                                          music: listData[index].song!,
-                                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => MusicPlayScreen(
+                                        image: provider.getSongData[index].img!,
+                                        sogname: provider
+                                            .getSongData[index].songname!,
+                                        cover: provider
+                                            .getSongData[index].coverimg!,
+                                        music:
+                                            provider.getSongData[index].song!,
                                       ),
-                                    );
-                                  });
-                                },
-                                child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              listData[index].img.toString()),
-                                          fit: BoxFit.cover),
-                                      border: Border.all(color: Colors.black),
-                                      shape: BoxShape.circle),
-                                ),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(provider
+                                            .getSongData[index].img
+                                            .toString()),
+                                        fit: BoxFit.cover),
+                                    border: Border.all(color: Colors.black),
+                                    shape: BoxShape.circle),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                listData[index].songname!,
-                                style: GoogleFonts.caveat(
-                                    fontSize: 25, color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              provider.getSongData[index].songname!,
+                              style: GoogleFonts.caveat(
+                                  fontSize: 25, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   );
                 }),
           )

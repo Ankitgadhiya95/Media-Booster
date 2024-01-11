@@ -35,19 +35,13 @@ class _VideoPlayScreenState extends State<VideoPlayScreen> {
     await Future.wait([_controller!.initialize()]);
 
     chewieController = ChewieController(
+        videoPlayerController: _controller!,
+        autoPlay: true,
+        looping: true,
+        fullScreenByDefault: true,
+        allowFullScreen: true,
+        draggableProgressBar: true);
 
-      videoPlayerController: _controller!,
-      autoPlay: true,
-      looping: true,
-     // aspectRatio: double.infinity,
-      fullScreenByDefault: true,
-      allowFullScreen : true,
-draggableProgressBar: true
-    );
-
-    final playerWidget = Chewie(
-      controller: chewieController!,
-    );
     setState(() {});
   }
 
@@ -66,26 +60,21 @@ draggableProgressBar: true
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-
             Container(
               padding: const EdgeInsets.only(top: 20.0),
             ),
             Text(widget.sogname),
-
-            SizedBox(height: 20,),
-
-            // chewieController==null?CircularProgressIndicator()
-            //     : Chewie(controller: chewieController!),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               height: 550,
               width: double.infinity,
-              // color: Colors.red,
               padding: const EdgeInsets.all(20),
               child: (chewieController == null)
                   ? Center(child: CircularProgressIndicator())
                   : Chewie(controller: chewieController!),
             ),
-
           ],
         ),
       ),
